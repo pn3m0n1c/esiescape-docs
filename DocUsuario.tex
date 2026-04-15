@@ -14,34 +14,71 @@ Documentación relacionada con las funciones del sistema pero no se hace referen
   \item Se pueden incluir pequeños ejemplos para dar una visión general de las características del sistema.  
 \end{itemize}
 
-
 \subsection{Tecnología}
 
-Un listado con una breve descripción de las tecnologías usadas en el proyecto: aplicaciones, frameworks, librerías, arquitecturas,...
-Por ejemplo, se puede añadir información sobre el tipo de programa, desarrollador, última versión estable y enlace a la página web oficial, entre otros detalles. 
-También se pueden añadir los iconos representativos de las herramientas.
+Las tecnologías y herramientas usadas para el desarrollo de este proyecto de juego de escape-room son:
+\begin{itemize}
 
-\bigskip
+	\item Git: Usado para la administración de los archivos del proyecto, control de versión, y compartido de archivos para trabajo en equipo.
+	\item Visual Studio Code: Editor de código con integración de Git para ver los cambios realizados y resolver conflictos donde varios miembros del equipo suban modificaciones que colisionen una con la otra.
+	\item Librerías: Se usan las librerías del estándar ANSI C, las cuales son empleadas para constituir módulos que realizan las distintas tareas que requiere el proyecto.
 
-Si se necesita hacer referencia a algunos documentos se incluyen las citas que sean necesarias \citep{Ejemplo1, Ejemplo2}.
+\end{itemize}
 
 
 \subsection{Manual de instalación}
 
-Una breve descripción que explique como instalar el sistema y adecuarlo a las configuraciones particulares del \textit{hardware}, indicando las características mínimas de \textit{hardware} requeridas para el funcionamiento del programa.  
+Para la instalación de nuestra implementación de ESI-Escape, el usuario deberá ejecutar desde la terminal \textbf{(¡MUY IMPORTANTE, hacerlo estando dentro del directorio del proyecto, para asegurar la carga de archivos con las rutas correctas!)} ''run'' (para directamente ejecutar el proyecto si está ya compilado en la carpeta "bin"), ''run\_and\_compile'' (para compilar el proyecto y luego ejecutarlo) o ''compile'' (para solo compilarlo en la carpeta ''bin''). Se usarán los archivos .bat si el usuario se encuentra en el sistema operativo Windows y los archivos .sh si se encuentra en Linux.
 
+\bigskip
+
+Para la compilación, es necesario que el usuario tenga instalado ''make'' mediante la forma preferida y disponible del usuario (en Linux lo instalamos usando el administrador de paquetes preferido para instalar ''build\_essential'', pero cabe notar que la instalación de esta herramienta varía dependiendo del tipo de distribución, y muchas veces viene preinstalada), y en Windows que tenga instalado ''MinGW'' con su carpeta ''bin'' añadida al PATH para la llamada que hacen ''run\_and\_compile'' y ''compile'' de ''mingw32-make'', el cual cumple la misma función que ''make'': compilar todo el proyecto con sus archivos de cabecera .h y de código .c.
+
+\bigskip
+
+\textbf{(Los archivos .txt de datos de entrada y de guardado de partida y jugadores se encuentran en el directorio ''data'').}
 
 \subsection{Acceso al sistema}
 
-Debe contener una explicación sencilla de cómo iniciarse en el sistema y cómo salir del mismo. Así como la forma de salir de los problemas más habituales.  
+Al entrar al programa, se le pedirá al usuario introducir su nombre de acceso y contraseña. Si estos no son encontrados, se le ofrece el usuario registrarse, pidiendo adicionalmente un nombre completo para este. Una vez iniciado sesión, el usuario verá el menú de inicio de ESI-ESCAPE, con las opciones de comenzar una Nueva partida, Cargar partida y Salir (para salir del juego de vuelta al sistema operativo). Durante una partida, la opción "Volver" te permitirá salir al menú de inicio para entonces dejar el juego.
 
+\bigskip
+
+El usuario se puede encontrar con el problema de encontrarse mensajes de alerta con archivos los cuales no pudieron ser cargados. En esos casos, la solución radica en ejecutar ''run'' o ''run\_and\_compile'' situándonos con la terminal en la carpeta del proyecto (es decir, la misma que contiene dichos archivos), para que así ESI-Escape encuentre los archivos .txt.
+
+\bigskip
+
+También puede ocurrir que el sistema operativo no encuentre ''bin/esi-escape'' o ''mingw32-make'' o "make".
+\begin{enumerate}
+	\item Si no se encuentra ''bin/esi-escape'' al ejecutar ''run'', significa que no está compilado, o no se está ejecutando ''run'' o ''run\_and\_compile' desde la carpeta del juego'. Se soluciona ejecutando ''run'', ''run\_and\_compile'' o ''compile'' desde la carpeta del juego, y asegurándonos de que el ejecutable está presente en ''bin'' haciendo ''run\_and\_compile'' o ''compile''.
+	\item Si no se encuentra ''mingw32-make'', instalar MinGW en tu equipo Windows, o si estás usando Linux, es recomendable instalar ''make'' en su lugar mediante la forma preferida y disponible del usuario (en Linux lo instalamos usando el administrador de paquetes preferido para instalar ''build\_esential'').
+	\item Si no se encuentra ''make'', y estando en Linux, lo instalamos mediante la forma preferida y disponible del usuario (en Linux lo instalamos usando el administrador de paquetes preferido para instalar ''build\_essential'', pero cabe notar que la instalación de esta herramienta varía dependiendo del tipo de distribución, y muchas veces viene preinstalada).
+\end{enumerate}
 
 \subsection{Manual de referencia}
 
-En esta sección se describe con detalle las ventajas que ofrece el sistema a los usuarios y cómo se pueden obtener mediante su uso. Debe describir, de una manera más completa y formal, el uso del sistema, así como las situaciones de error y los informes generados.  
+La interfaz de juego de ESI-Escape permite una navegación fluida entre las salas y sus objetos y puzles; permitiendo realizar diversas acciones sobre estos.
+\bigskip
+\begin{itemize}
+	\item Las opciones de ''Describir sala'', ''Examinar (objetos y salidas)'' e ''Inventario'' mostrarán información sobre lo que sus nombres indican, para luego pedir al usuario una pulsación para volver al menú de juego.
+	\item ''Entrar en otra sala'' te permitirá ir a otra sala la cual no esté bloqueada, esté adyacente a la actual y exista.\bigskip
 
+''Coger objeto'' te permitirá agarrar un objeto que exista y esté presente en la sala actual.\bigskip
+
+''Soltar objeto'' permite colocar un objeto que exista y esté en tu inventario en la sala actual.\bigskip
+
+''Usar objeto'' permite usar un objeto que exista y esté en tu inventario para desbloquear salidas que requieran de dicho objeto para desbloquearse, estén adyacentes a la actual y existan.\bigskip
+
+Y ''Resolver puzle / introducir código'' permite al usuario resolver un puzle o introducir un código que exista y se encuentre en la sala actual, para así desbloquear las salidas que lo tengan como condición en cualquier parte.\bigskip
+
+\textbf{Si cualquiera de las condiciones especificadas anteriormente no se cumplen, el juego mostrará mensajes de error haciendo saber al jugador lo que está incumpliendo.}
+
+\item Al pulsar ''Guardar partida'', los datos de la partida actual son almacenados en el directorio ''data'' para que el usuario pueda cargar su partida en una próxima sesión.
+
+\item Por último, si pulsas ''Volver'', el usuario volverá a la pantalla de inicio donde podrá crear una Nueva partida, Cargar partida o Salir del juego.
+
+\end{itemize}
 
 \subsection{Guía del operador}
 
-Si el programa requiriera de operador entonces se incluiría esta sección. Debe describir cómo se debe de reaccionar antes determinadas situaciones que pueden darse durante el uso del sistema.  
-
+(Este programa no requiere de operador)

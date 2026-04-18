@@ -31,9 +31,27 @@ Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las
 
 \begin{itemize}
 
-	\item \textbf{Pruebas de ruta básica de ''salas\_get\_sala\_from\_id'' (José Miguel Pérez Tejero):} \bigskip \bigskip
+	\item \textbf{Pruebas de ruta básica de ''salas\_get\_sala\_from\_id'' (José Miguel Pérez Tejero):}
 	
-	\includegraphics[width=1\textwidth]{Salas_get_salas_by_id_grafo.png}
+		\includegraphics[width=1\textwidth]{Salas_get_salas_by_id_grafo.png} \bigskip
+
+		\pagebreak
+
+		\textbf{Casos de prueba:}
+
+		\item \underline{Ruta 1 (1-2-6-7) (No entramos en el for):}
+	
+			Para llegar a un caso en el que no entremos al for, el número asociado al número de salas debe ser menor que 1.\\Así pues, un caso de prueba sería en el cual ''\verb|number_of_salas|'' es menor que 1.
+
+		\item \underline{Ruta 2 (1-2-3-5-2-6-7) (Entramos en el for pero no entramos en el if):}
+
+			Para entrar en esa ruta, no debe de haber ninguna sala que comparta el valor de ''\verb|id_to_search|'', y ''\verb|number_of_salas|'' debe ser mayor o igual que 1. \\
+			También probaremos casos donde ''\verb|number_of_salas|'' supere al número real de salas.
+
+		\item \underline{Ruta 3 (1-2-3-4-5-2-6-7) (Entramos en el for y en el if):}
+		
+			Aquí ''\verb|number_of_salas|'' será mayor o igual que 1, coincidirá con el número de salas, y habrá una sala mínima cuyo ID coincida con ''\verb|id_to_search|''. \\
+			Así pues, diseñaremos casos de prueba que cumplan dichas condiciones.
 
 \end{itemize}
 

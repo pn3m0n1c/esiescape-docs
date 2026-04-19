@@ -27,11 +27,11 @@ Esta sección debe describir el análisis y la especificación de requisitos. C�
 Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las pruebas realizadas a cada módulo y las pruebas de integración de los distintos módulos probándolo como un todo. Por último, también se debe incluir la descripción del plan de pruebas de aceptación.  
 
 
-\subsubsection{Prueba de los módulos}
+\subsubsection{Pruebas de ruta básica (caja blanca) de tres funciones}
 
 \begin{itemize}
 
-	\item \textbf{Pruebas de ruta básica de ''salas\_get\_sala\_from\_id'' (José Miguel Pérez Tejero):}
+	\item \textbf{Pruebas de ruta básica (caja blanca) de ''salas\_get\_sala\_from\_id'' (José Miguel Pérez Tejero):}
 	
 		\includegraphics[width=1\textwidth]{Salas_get_salas_by_id_grafo.png} \bigskip
 
@@ -41,18 +41,65 @@ Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las
 
 		\item \underline{Ruta 1 (1-2-6-7) (No entramos en el for):}
 	
-			Para llegar a un caso en el que no entremos al for, el número asociado al número de salas debe ser menor que 1.\\Así pues, un caso de prueba sería en el cual ''\verb|number_of_salas|'' es menor que 1.
+			Para llegar a un caso en el que no entremos al for, el número asociado al número de salas debe ser menor que 1.\\
+			Así pues, un caso de prueba sería en el cual ''\verb|number_of_salas|'' es menor que 1.\\
+			El resultado esperado es que la función devuelva ''\verb|NULL|''.
 
 		\item \underline{Ruta 2 (1-2-3-5-2-6-7) (Entramos en el for pero no entramos en el if):}
 
 			Para entrar en esa ruta, no debe de haber ninguna sala que comparta el valor de ''\verb|id_to_search|'', y ''\verb|number_of_salas|'' debe ser mayor o igual que 1. \\
-			También probaremos casos donde ''\verb|number_of_salas|'' supere al número real de salas.
+			También probaremos casos donde ''\verb|number_of_salas|'' supere al número real de salas. \\
+			Para estos casos de prueba el resultado esperado será que la función devuelva '\verb|NULL|' (o, en el caso de ''\verb|number_of_salas|'' mayor que el número real de salas, que al buscar la ID en un espacio de memoria en el que no haya realmente salas, justo coincida que la memoria basura contenga el valor de la ID buscada, en cuyo caso se obtendrá una sala inexistente, ocasionando que el programa use memoria basura como datos de juego, y que al usarse esta función, el juego deje de comportarse de manera adecuada, mostrando texto incoherente al describir sala, por ejemplo).
 
 		\item \underline{Ruta 3 (1-2-3-4-5-2-6-7) (Entramos en el for y en el if):}
 		
 			Aquí ''\verb|number_of_salas|'' será mayor o igual que 1, coincidirá con el número de salas, y habrá una sala mínima cuyo ID coincida con ''\verb|id_to_search|''. \\
-			Así pues, diseñaremos casos de prueba que cumplan dichas condiciones.
+			Así pues, diseñaremos casos de prueba que cumplan dichas condiciones, y dichos casos deberán hacer que la función devuelva un puntero a la sala con la ID buscada.
 
+
+\end{itemize}
+
+\subsubsection{Pruebas de caja negra de las funciones de cada módulo y de cada módulo como conjunto:}
+
+	\begin{itemize}
+
+		\item \textbf{Pruebas del módulo UI y sus funciones:}
+		\begin{itemize}
+			\item \verb|void ui_clean_buffer();| : Probaremos el caso en el que queden en el buffer caracteres seguidos de un salto de linea \verb|\n| (Se esperará el resultado de que el buffer se vacíe), y otro caso a probar será en el cual el buffer contenga la señal \verb|EOF| (en cuyo caso se espera que se termine de vaciar el buffer sin problema).
+			\item \verb|void ui_graphic_show_game_name();| : Simplemente probaremos el caso en el que llamaremos a la función, siendo el resultado esperado que se muestre por pantalla el nombre del juego.
+			\item \verb|void ui_graphic_show_screen_separation();| : Simplemente probaremos el caso en el que llamaremos a la función, siendo el resultado esperado que se muestre por pantalla una separación en forma de línea.
+			\item \verb|int ui_menu_create(Menu);| : Probaremos a crear un menú y elegir una opción con un número dentro del rango de posibilidades (se espera que se devuelva el índice adecuado y/o se ejecute la acción asignada a la opción si no es nula) y también probaremos a, con el mismo menú, introducir una letra, caracter o un número fuera de rango (el resultado esperado será que se vuelva a solicitar la entrada al usuario ''\verb|Elige dentro del rango de opciones >|'').
+			\item \verb|int ui_confirmation(char text[200]);| : Probaremos a introducir s o S (la función deberá devolver un 1), también a introducir n o N (la función deberá devolver 0) y por último, introducir cualquier otro caracter (siendo el resultado esperado una nueva solicitud de entrada al usuario ''\verb|(S/N) >|'').
+			\item \verb|void ui_anykey_press();| : Simplemente probaremos a llamar a la función, y esperaremos a que el usuario pulse una tecla (el resultado esperado será que el flujo del programa continue sin problemas tras la pulsación).
+			\item \verb|void ui_exit_game(GameState*, int);| : Probaremos el caso en el que salgamos del juego son el parámetro entero ''\verb|save_to_jugadores|'' a 1 (siendo el resultado esperado el guardado de los datos del jugador junto con sus objetos en Jugadores.txt, el liberado de memoria dinámica, el mostrado de los créditos, y una salida con código 0, de éxito), y también el caso en el que ''\verb|save_to_jugadores|'' sea 0 (en cuyo caso simplemente se liberará la memoria dinámica, aparecerán los créditos, y se saldrá del juego con código 0, de éxito).
+			\item \verb|void ui_user_initial_menu(GameState*);| : Los casos de prueba que podemos comprobar son los de ingresar un usuario y contraseña existentes en Jugadores.txt (siendo el resultado esperado que el jugador correspondiente sea asignado como jugador actual y se imprima la bienvenida), que al no existir las credenciales se pida y se acepte registrar un nuevo jugador (en cuyo caso se pedirá el nombre completo y se guardará en Jugadores.txt) y por último el caso en el que, en el que en vez de aceptar, se rechace el registro (ocurriendo que salimos del juego).
+			\item \verb|int ui_main_menu();| : Probaremos cada una de las opciones de Nueva partida, Cargar partida y Salir (se deberá de comenzar un nuevo juego con el jugador actual, cargar la partida guardada del jugador actual y empezar a jugar, o simplemente salir del juego respectivamente).
+			\item \verb|void ui_describe_sala(Sala*, GameState*);| : Probaremos el caso en el que sala sea de tipo INICIAL (se mostrarán el nombre, descripción y el hecho de que es una sala inicial), que sea una sala NORMAL (se mostrarán el nombre, descripción y el hecho de que es una sala normal) y que sea una sala de SALIDA (se imprimirá un texto de VICTORIA y se preguntará si se quiere volver al menú principal).
+			\item \verb|void ui_show_filter_connections(Conns*, Salas*, char*);| : Probaremos los casos de prueba en los cuales pasaremos una sala con conexiones (se mostrará el destino y el estado de bloqueo de cada una), y una sin conexiones (no se imprimirá ninguna conexión).
+			\item \verb|void ui_show_filter_inventory(Inventory*, char*);| : Se probará introducir un filtro existente de localización con objetos, o una cadena vacía '''' (se mostrarán los objetos de esa localización o todos respectivamente) y a poner un filtro donde no hayan objetos (se mostrará - VACIO - ).
+			\item \verb|void ui_examine_sala(Sala*, GameState*);| : Simplemente probaremos el caso en el que llamaremos a la función (siendo el resultado esperado que se muestren los objetos y las conexiones de la sala, esperando una pulsación de teclado del usuario al final).
+			\item \verb|void ui_enter_sala(GameState*);| : Probaremos a introducir un ID de destino accesible (en cuyo caso avanzaremos de sala), una ruta bloqueada (mostrando que ésta está bloqueada, y hay una condición para desbloquearla), introducir un destino inexistente (mostrandose un mensaje de error ''NO HAY NINGUNA SALIDA A ESA SALA, O NO EXISTE!''), e introducir \verb|n| o pulsar ENTER (volviendo así atrás sin hacer nada).
+			\item \verb|void ui_pick_drop_object(GameState*, int);| : Probaremos con el parámetro entero ''\verb|pick|'' a 1 (pasando así un objeto de la sala al inventario pidiendo confirmación), con su valor a 0 (pasando un objeto del inventario a la sala actual, también pidiendo confirmación), o introduciendo un ID que no esté disponible (mostrando ''ESTE OBJETO NO ESTÁ EN ESTA SALA!'' o ''NO TIENES ESTE OBJETO!'' dependiendo de la ocasión).
+			\item \verb|void ui_show_player_inventory(GameState*);| : Probaremos simplemente a llamar esta función (ocurriendo que se muestren los objetos con localización ''Inventario'').
+			\item \verb|void ui_use_object(GameState*);| : Probaremos la función estando en una sala que tenga una salida desbloqueable (ocurriendo que el ''\verb|conn_block|'' de la conexión que requería de ese objeto pase a 0 y se nos notifique de ello), y también usar un objeto que no se pueda usar en esa sala (imprimiendose que ese objeto no se puede utilizar en ese lugar), además de probar por supuesto con objetos que se tengan, no se tengan o que no estén en la sala actual (notificándose los últimos dos casos como errores).
+			\item \verb|void ui_solve_puzzle(GameState*);| : Podemos probar a introducir una ID de puzle que no exista (notificándose como error), y luego, introduciendo puzles que existan, podemos resolverlo correctamente (desbloqueando todas las salidas relacionadas a este y marcando \verb|resuelto=1|) a resolverlo incorrectamente (se notificará la incorrectitud y no se alterarán las conexiones) y que el puzle esté resuelto ya de antes pues \verb|resuelto=1| (ocurriendo que se comunique que ya está resuelto dicho puzle).
+			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar una secuencia en la que ejecutemos \verb|ui_user_initial_menu| y \verb|ui_main_menu| (cargandose o registrandose el jugador especificado y realizando la opción de nueva o cargar partida, o bien saliendo del programa). También podremos probar funciones como \verb|ui_examine_sala|, \verb|ui_pick_drop_object|, \verb|ui_show_player_inventory|, \verb|ui_use_object|, \verb|ui_solve_puzzle|, o \verb|ui_enter_sala| (viendo que las funciones del menú enmedio de una partida funcionan como es debido y realizan sus funciones). Y por último, podremos probar a ejecutar \verb|ui_exit_game| (para ver que funciona correctamente el guardado de datos de jugadores, el liberado de memoria, el mostrado de créditos, y el cerrado del juego).
+		\end{itemize}
+
+		\item \textbf{Pruebas del módulo salas y sus funciones:}
+		\begin{itemize}
+
+			\item \verb|Sala* salas_get_sala_from_id(char*, Salas*);| : Podemos probar a buscar una sala con ID existente (ocurriendo que se devuelva un puntero a la sala con el ID buscado), y a buscar por un ID que no exista en ninguna sala (devolviendo así \verb|NULL|).
+			\item \verb|Sala* salas_get_sala_inicial(Salas*);| : Probaremos con un conjunto de salas con sala inicial (devolviendo así un puntero a dicha sala) y también un conjunto sin sala inicial (devolviéndose \verb|NULL|):
+			\item \verb|Salas salas_load_salas(char*);| : Podemos probar con un archivo con una ruta que exista y con formato correcto (cargándose sin problemas todos los datos de las salas), con un archivo inexistente o sin permisos (mostrando un mensaje de error y saliendo de del juego con código 1, de error), o también con unas salas con tipos de salas incorrectos o mal formateados (notificándose que hay un formato incorrecto de tipo de sala y saliendo de del juego con código 1, de error).
+			\item \verb|Conns salas_load_conns(char*);| : Los casos de prueba serían probar con un archivo con una ruta que exista y con formato correcto (cargándose sin problemas todos los datos de las conexiones), con un archivo inexistente o sin permisos (mostrando un mensaje de error y saliendo de del juego con código 1, de error), o también con unas conexiones con formateado de bloqueo o activación incorrectos (notificándose ''Formato incorrecto de bloqueo o activacion de conexion.'' y saliendo de del juego con código 1, de error).
+			\item \verb|Conn* salas_find_conn_by_id(char*, Conns*);| : Probaremos a buscar una conexión con un ID que exista (ocurriendo que se devuelva un puntero a la conexión con el ID buscado), y a buscar por un ID que no exista en ninguna conexión (devolviendo así \verb|NULL|).
+			\item \verb|void salas_free_salas(Salas*);| : Podemos encontrar los casos de prueba de que tengamos un array de Salas ya cargado (liberándose sin problema) y también pasar un array de Salas cuyo puntero esté con valor NULL (lo cual no ocasionará ningún fallo ni cierre accidental del programa).
+			\item \verb|void salas_free_conns(Conns*);| : Probaremos los casos de prueba en los que tengamos un array de conexiones ya cargado en memoria (liberándose sin problema) y también pasar un array de conexiones cuyo puntero esté con valor NULL (lo cual no ocasionará ningún fallo ni cierre accidental del programa).
+			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar a primero ejecutar \verb|salas_load_salas| y \verb|salas_load_conns|, luego \verb|salas_get_sala_inicial| para obtener el punto de inicio, buscar en las conexiones una que tenga como punto de partida la sala inicial y ver el destino, para usar \verb|salas_get_sala_from_id| y obtener el id de dicho destino, y terminar liberando memoria con \verb|salas_free_salas| y \verb|salas_free_cons| (debiendo de ocurrir todo el proceso sin ningún fallo ni ningún conflicto de integración entre cada función). También podemos intentar usar las funciones \verb|salas_load_salas| y \verb|salas_load_conns| con datos incorrectamente formateados o archivos no existentes o sin permisos (parando el programa porque, o bien no se puedo abrir el archivo pedido, o no estaba bien formateado).
+			
+		\end{itemize}
+	
 \end{itemize}
 
 \subsubsection{Prueba de integración}

@@ -13,12 +13,23 @@ Esta sección debe describir el análisis y la especificación de requisitos. C�
 
 \subsection{Módulos}
 
+A continuación se presenta una breve descripción de cada uno de los módulos en las que ESI-Escape está divido.
+
 \begin{itemize}
+
+	\item \textbf{Partida}: Es el encargado de gestionar tareas relacionadas con la 
+	partida en sí. Esto es, guardar y cargar su estado, 
+	inicializar los archivos de configuración en memoria mediante
+	la importación de las funciones de carga de cada módulo, y gestionar el estado de
+	la estructura "GameState", que almacena el estado de la partida.
+	
+	\item \textbf{Inventario}: La responsabilidad de este módulo es la gestión de los objetos. Interacciona con el archivo de configuración
+	\textbf{Objetos.txt} para cargar los objetos registrados, y alberga diferentes funciones para buscar objetos en memoria, actualizar su estado
+	y escribirlos al guardar la partida.
 
 	\item \textbf{Salas}: Este módulo se encarga del administrado tanto de las conexiones como de las salas que componen el escape room. Posee funciones para la carga de conexiones y salas; liberarlas de la memoria, obtener una sala por su ID, y obtener la sala inicial de la partida actual. Este módulo muestra en pantalla errores si no se pudieron cargar los datos de las salas y/o conexiones, o si poseen un formato incorrecto en alguno de sus campos.
 
 	\item \textbf{UI (Interfaz de Usuario)}: Este módulo se centra en pedir información al usuario y mostrarla por pantalla. Posee funciones para la creación de menús, vaciar el buffer de entrada, esperar a que el usuario presione una tecla para continuar, elegir SÍ o NO, mostrar el logo del juego y otros elementos por pantalla; salir del juego, mostrar los menús de registro o inicio de sesión, y el menú principal (el módulo '\textbf{partida} usa sus funciones para crear el menú de juego); mostrar los datos de las estructuras cargadas por memoria dinámica con la opción de poner filtros (por ejemplo, para solo ver los objetos en la sala actual); mostrar las interfaces de las diferentes opciones del menú de juego y de salir del juego mostrando unos breves créditos con los miembros creadores del trabajo.
-
 \end{itemize}
 
 

@@ -3,17 +3,26 @@
 
 \section{Documentación de usuario}
 
-Documentación relacionada con las funciones del sistema pero no se hace referencia a nada relativo a su implementación. 
-Está orientado a las personas que van a usar el sistema no a los que lo van a mantener.  
+Documentación relacionada con las funciones del sistema 
+pero no se hace referencia a nada relativo a su implementación. 
+Está orientado a las personas que van a usar el sistema no a los 
+que lo van a mantener.
 
 \subsection{Descripción funcional}
 
-\textbf{ESI-Escape} tiene como propósito proporcionar una experiencia de juego que incluya las siguientes características:
+En esta sección se procederá a describir las funcionalidades disponibles, aportar 
+información sobre las posibles formas de desarrollo de una partida e informar sobre 
+todo lo que se puede esperar del programa.
+
+\bigskip
+
+Nuestra implementación de \textbf{ESI-Escape} tiene como propósito proporcionar 
+una experiencia de juego que incluya las siguientes características:
 
 \begin{itemize}
   \item \textbf{Interacción con el usuario}: Se proporciona una interfaz gráfica de juego, que consiste en textos y mensajes desencadenados por el flujo
-  del juego, que informan en todo momento al usuario del estado de las decisiones que toma, como desplazarse o coger un objeto, así como de
-  las funcionalidades que tiene disponibles durante la partida.
+  del juego, que informan en todo momento al usuario del estado de las decisiones que toma, como por ejemplo desplazarse o coger un objeto,
+  así como de las funcionalidades que tiene disponibles durante la partida.
   \item \textbf{Interacción con objetos}: Esto es poder recoger objetos y añadirlos a un \emph{inventario} perteneciente a un jugador, una representación 
   abstracta de los objetos que puede usar para resolver puzles y poder situarlos en salas concretas durante la partida.
   \item \textbf{Resolución de Puzles}: Es posible insertar un puzle en una sala en base a un archivo de configuración y asociarlo al desbloqueo 
@@ -22,28 +31,52 @@ Está orientado a las personas que van a usar el sistema no a los que lo van a m
   \item \textbf{Generación personalizada de un mapa}: Se permite la creación de un número extensible de salas y conexiones a través de una 
   cadena en un formato concreto ubicada en los ficheros de configuración asociados a este propósito y descritos en detalle más adelante en la documentación.
   \item \textbf{Registro de jugadores}: Es posible albergar múltiples jugadores almacenadas mediante una tupla \emph{Usuario-Contraseña} que se
-  creará a través de una función de registro que será lo primero que un usuario encuentre al iniciar el programa.
+  creará a través de una función de registro, que será lo primero que un usuario encuentre al iniciar el programa.
   \item \textbf{Persistencia de los datos}: Es posible guardar tu partida durante el juego, quedando almacenada en un fichero de configuración 
   del cual más tarde puede recuperarse en base a tu usuario y contraseña. Nuestra implementación solo permite una partida guardada
   por jugador, que se irá sobreescribiendo con cada guardado.
 \end{itemize}
 
-En esta figura podemos observar un esbozo del flujo del juego:
+En la siguiente figura podemos observar un esquema que nos informa del 
+flujo general del programa:
 
-<insertar esquema del flujo del juego>
+{\includegraphics[width=1\textwidth]{gameFlow.png}}\\[1\baselineskip]
 
-En nuestra entrega del proyecto se incluye una configuración de salas y objetos simplificada para facilitar la revisión de la misma, que consiste
+\newpage
+
+Pueden distinguirse \textbf{tres ramas principales}, que hemos llamado \emph{A,B y C},
+basadas en las posibles elecciones desde el menú principal.
+
+\bigskip
+
+La rama \emph{A}, la más más natural, consiste en iniciar una partida nueva, 
+registrar tu jugador,y a partir de ese momento el bucle principal del juego se inicia, 
+permitiéndonos ya interactuar con las salas, los objetos y los puzles.
+
+\bigskip
+
+La rama \emph{B} consiste en seleccionar la opción "\textbf{Cargar partida}", 
+que considera la existencia de un perfil de jugador, pide identificación mediante 
+usuario y contraseña para luego entrar en el flujo \emph{A}, con la diferencia de que
+antes de hacerlo se añade el paso extra de "\textbf{Configurar partida}", donde se 
+establece en memoria el estado guardado de la partida anterior.
+
+\bigskip
+
+La tercera rama \emph{C}, es simplemente salir del programa.
+
+\bigskip
+
+En nuestra entrega del proyecto se incluye una configuración de salas y objetos 
+simplificada para facilitar la revisión de la misma, consiste
 en el siguiente mapa de juego:
 
-<insertar mapa del juego con salas, puzle y uso de objeto>
+\bigskip
 
+{\includegraphics[width=1\textwidth]{Map.png}}\\[1\baselineskip]
 
-
-\begin{itemize}
-  \item Debe describir de forma simple el propósito del sistema.
-  \item En esta sección se debe incluir una breve descripción funcional sobre lo que hace y no hace el sistema.
-  \item Se pueden incluir pequeños ejemplos para dar una visión general de las características del sistema.  
-\end{itemize}
+Hemos optado por este diseño para poder incluir todas las funcionalidades 
+en la menor cantidad de salas posibles.
 
 \subsection{Tecnologías}
 

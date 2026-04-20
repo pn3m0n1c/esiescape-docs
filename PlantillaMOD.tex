@@ -29,9 +29,23 @@
 \usepackage{listingsutf8} %Insertar código fuente
 \usepackage[breaklinks=true]{hyperref}
 \usepackage{tocbibind}
+\usepackage{fancyhdr}
 
 \renewcommand{\thesection}{\arabic{section}} % Renumerar las secciones
 
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Cabecera: "GII - Metodología de la Programación" arriba a la derecha
+\fancyhead[R]{\textcolor{gray!60}{\small GII -- Metodología de la Programación}}
+\fancyhead[L]{}
+
+% Pie: "ESI-Escape docs" a la izquierda, número al centro, "Universidad de Cádiz" a la derecha
+\fancyfoot[L]{\textcolor{gray!60}{\small ESI-Escape docs}}
+\fancyfoot[C]{\textcolor{gray!60}{\thepage}}
+\fancyfoot[R]{\textcolor{gray!60}{\small Universidad de Cádiz}}
 
 \begin{document}
 

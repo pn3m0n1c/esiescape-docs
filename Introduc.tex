@@ -1,41 +1,39 @@
 %%%%%%%%%%%%%%%%%%%% Introducción %%%%%%%%%%%%%%%%%%%%
-
-
 \section{Introducción}
 
-Este es un ejemplo de plantilla para la generación de la documentación asociada al desarrollo de un programa. Se puede usar como guía, pero puede sufrir todas las modificaciones que considere oportunas para mejorar su documento.
 
-Es necesario incluir una portada, dispone de cuatro ejemplos. Puede comprobar el resultado de cada uno de ellos en los ficheros PDF. En el fichero .tex está por defecto el ejemplo de Portada1.
+Este documento recoge toda la información necesaria para describir 
+e informar acerca del software \textbf{ESI-Escape}, proyecto de prácticas para la asignatura \emph{Metodología de la Programación}
+con el propósito de mejorar nuestro conocimiento de la modularización de un 
+programa, nuestras habilidades de trabajo y organización en equipo 
+además de la integración de pruebas y documentación de un software. 
 
-Se debe añadir un índice. Puede observar en el código cómo se puede incluir en la sección destinada a tal fin.
-
-A lo largo del documento también puede surgir la necesidad de añadir una imagen. Puede ver cómo hacerlo en el código de las portadas.
-
-\LaTeX también le permite incluir código. Fíjese en el código fuente cómo está delimitado. El resultado para el típico ejemplo \textit{Hola mundo} en C es el siguiente:
-
-\lstinputlisting[]{HolaMundo.c}
-
-Puede consultar tutoriales, libros o blogs para profundizar más en el aprendizaje de \LaTeX, resulta muy interesante por la gran ventaja que ofrece de proporcionar documentos con una alta calidad. Sea cual el sistema operativo tenga en cuenta que va a neccesitar:
-
-\begin{enumerate}
-\item Editor de texto para generar el fichero .tex con el código
-\item Distribución de \LaTeX para compilar el fichero .tex y generar el fichero .pdf
-\item Visor de documentos para poder visualizar el fichero .pdf generado
-\end{enumerate}
-
-Las siguientes secciones indican cada una de las partes que se debe incluir en la documentación del programa. Hay que tener en cuenta que se trata de una tarea tediosa pero muy necesaria para realizar un buen mantenimiento del programa. Para cualquier modificación del código hay que entender el mismo, siendo de gran ayuda la documentación.
+A continuación se proporciona una breve descripción de \textbf{ESI-Escape}:
 
 \bigskip
 
-Recuerde que en la documentación del programa se distinguen dos partes claramente diferenciadas:
+Se trata de una implementación en \textbf{Lenguaje ANSI C} de 
+un videojuego de estilo aventura o \emph{escape-room} por terminal con capacidades como la 
+\textbf{interacción con objetos}, un mapa construido en base a una \textbf{configuración personalizable de salas y conexiones}, 
+\textbf{persistencia de datos} mediante archivos de texto que también 
+nos permitirán tanto configurar diferentes escenarios como \textbf{guardar y cargar partida}, 
+\textbf{resolución de puzles} con soluciones númericas o por cadena de texto y en general disfrutar
+de una experiencia \textbf{interactiva y configurable}.
 
+\bigskip
+
+Este documento está dividido en las siguientes secciones principales:
 \begin{itemize}
-\item Documentación interna. Documentación contenida en las líneas de comentarios del programa.
-\item Documentación externa. Documentación que incluye el análisis, diagramas de flujos y/o pseudocódigos, manuales de usuario con instrucciones para ejecutar el programa e interpretar los resultados. Dentro de esta se distingue a su vez:
-  \begin{itemize}
-    \item Documentación del usuario
-    \item Documentación del sistema
-  \end{itemize}
+\item \textbf{Documentación de usuario}: Incluirá un manual de instalación paso a paso, tecnologías usadas durante el desarrollo, y descripciones de uso del programa
+\item \textbf{Documentación del sistema}: Aquí se recogerán detalles 
+sobre requisitos del sistema, pruebas realizadas e información 
+sobre cómo se ha efectúado la fase de análisis y división del programa 
+en varios problemas más pequeños fácilmente abarcables.
+\item \textbf{Documentación del código fuente}: En esta sección se incluirá
+una exportación de la librería \emph{Doxygen} que recogerá 
+una descripción y clasificación de cada una de las funciones  
+pertencientes a los módulos que conforman ESI-Escape. Se incluye un enlace a una 
+documentación online desplegada en \emph{GitHub pages}, para una navegación más cómoda si
+se prefierese.
 \end{itemize}
 
-En las siguientes secciones se describirá el contenido a incluir en cada uno de estos tipos de documentación. El objetivo que se debe marcar en la redacción de las mismas debe ser el de conseguir un texto claro, completo y conciso, utilizando para ello construcciones gramaticales y ortográficas correctas.  

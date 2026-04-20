@@ -3,10 +3,41 @@
 
 \section{Documentación de usuario}
 
-Documentación relacionada con las funciones del sistema pero no se hace referencia a nada relativo a su implementación. Está orientado a las personas que van a usar el sistema no a los que lo van a mantener.  
-
+Documentación relacionada con las funciones del sistema pero no se hace referencia a nada relativo a su implementación. 
+Está orientado a las personas que van a usar el sistema no a los que lo van a mantener.  
 
 \subsection{Descripción funcional}
+
+\textbf{ESI-Escape} tiene como propósito proporcionar una experiencia de juego que incluya las siguientes características:
+
+\begin{itemize}
+  \item \textbf{Interacción con el usuario}: Se proporciona una interfaz gráfica de juego, que consiste en textos y mensajes desencadenados por el flujo
+  del juego, que informan en todo momento al usuario del estado de las decisiones que toma, como desplazarse o coger un objeto, así como de
+  las funcionalidades que tiene disponibles durante la partida.
+  \item \textbf{Interacción con objetos}: Esto es poder recoger objetos y añadirlos a un \emph{inventario} perteneciente a un jugador, una representación 
+  abstracta de los objetos que puede usar para resolver puzles y poder situarlos en salas concretas durante la partida.
+  \item \textbf{Resolución de Puzles}: Es posible insertar un puzle en una sala en base a un archivo de configuración y asociarlo al desbloqueo 
+  de una conexión entre dos salas concretas. Este puzle podría consistir en la introducción de un código o una palabra que podrías encontrar a través de
+  pistas que el propio juego proporciona. Esto vendría configurado
+  \item \textbf{Generación personalizada de un mapa}: Se permite la creación de un número extensible de salas y conexiones a través de una 
+  cadena en un formato concreto ubicada en los ficheros de configuración asociados a este propósito y descritos en detalle más adelante en la documentación.
+  \item \textbf{Registro de jugadores}: Es posible albergar múltiples jugadores almacenadas mediante una tupla \emph{Usuario-Contraseña} que se
+  creará a través de una función de registro que será lo primero que un usuario encuentre al iniciar el programa.
+  \item \textbf{Persistencia de los datos}: Es posible guardar tu partida durante el juego, quedando almacenada en un fichero de configuración 
+  del cual más tarde puede recuperarse en base a tu usuario y contraseña. Nuestra implementación solo permite una partida guardada
+  por jugador, que se irá sobreescribiendo con cada guardado.
+\end{itemize}
+
+En esta figura podemos observar un esbozo del flujo del juego:
+
+<insertar esquema del flujo del juego>
+
+En nuestra entrega del proyecto se incluye una configuración de salas y objetos simplificada para facilitar la revisión de la misma, que consiste
+en el siguiente mapa de juego:
+
+<insertar mapa del juego con salas, puzle y uso de objeto>
+
+
 
 \begin{itemize}
   \item Debe describir de forma simple el propósito del sistema.
@@ -14,15 +45,19 @@ Documentación relacionada con las funciones del sistema pero no se hace referen
   \item Se pueden incluir pequeños ejemplos para dar una visión general de las características del sistema.  
 \end{itemize}
 
-\subsection{Tecnología}
+\subsection{Tecnologías}
 
 Las tecnologías y herramientas usadas para el desarrollo de este proyecto de juego de escape-room son:
 \begin{itemize}
 
-	\item Git: Usado para la administración de los archivos del proyecto, control de versión, y compartido de archivos para trabajo en equipo.
-	\item Visual Studio Code: Editor de código con integración de Git para ver los cambios realizados y resolver conflictos donde varios miembros del equipo suban modificaciones que colisionen una con la otra.
-	\item Librerías: Se usan las librerías del estándar ANSI C, las cuales son empleadas para constituir módulos que realizan las distintas tareas que requiere el proyecto.
-
+	\item \textbf{Git}: Usado para la administración de los archivos del proyecto, control de versión, y compartido de archivos para trabajo en equipo.
+	\item \textbf{GitHub}: Plataforma de desarrollo donde se ha alojado el repositorio de \emph{Git} y se ha realizado la planificación del proyecto mediante su herramienta \emph{GitHub Projects}.
+	\item \textbf{Visual Studio Code}: Editor de código con integración de Git para ver los cambios realizados y resolver conflictos donde varios miembros del equipo suban modificaciones que colisionen una con la otra.
+	\item Librerías: 
+	\begin{itemize}
+		\item Se usan las librerías \textbf{del estándar ANSI C}, las cuales son empleadas para constituir módulos que realizan las distintas tareas que requiere el proyecto.
+		\item \textbf{Doxygen} para la generación de documentación automática a partir de los comentarios del código fuente.
+	\end{itemize}
 \end{itemize}
 
 

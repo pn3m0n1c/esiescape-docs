@@ -3,13 +3,67 @@
 
 \section{Documentación de sistema}
 
-Documentación referida a los aspectos del análisis, diseño, implementación y prueba del \textit{software}, así como la implantación del mismo. En general, debe hacer referencia al sistema, ya que está orientada a los programadores que van a realizar el mantenimiento. Debe estar muy bien estructurada, desde lo más general a los más interno.   
 
+En esta sección se recoge la documentación orientada a los programadores encargados 
+del mantenimiento del sistema, abarcando los aspectos de análisis, diseño, implementación y prueba del \textit{software}. 
+Se describen la descomposición del problema en módulos, las dependencias entre ellos 
+y el plan de pruebas llevado a cabo durante el desarrollo.
 
 \subsection{Especificación del sistema}
 
-Esta sección debe describir el análisis y la especificación de requisitos. Cómo se descompone el problema en distintos subproblemas y los módulos asociados a cada uno de ellos, acompañados de su especificación. También debe incluir el plan de desarrollo del \textit{software}.  
+El problema fue descompuesto en módulos siguiendo un criterio de máxima cohesión y mínimo acoplamiento a la hora del diseño. 
+En términos generales, se estableció una correspondencia directa entre módulo y fichero de configuración. Ya que existen \textbf{seis módulos} y
+nuestro equipo poseía \textbf{tres miembros}, nos pareció equilibrado que cada miembro del equipo pudiera hacerse cargo de \textbf{dos
+módulos} junto a dos ficheros de datos que le corresponde. En el caso de \textbf{Salas}, se decidió incluir un único módulo
+para gestionar tanto las salas como sus conexiones, ya que el diseño de las conexiones por su naturaleza está intrínsecamente ligado
+a las salas. A su vez, al no tener fichero asociado el módulo \textbf{UI} (\emph{User Interface}), la misma persona que se encargase
+de salas podría encargarse de éste módulo para seguir cumpliendo la regla de solo trabajar con dos ficheros de texto.
+La elaboración de funciones de lectura y escritura de ficheros constituye una tarea algo pesada; 
+distribuirla de esta forma garantizaba que la carga de trabajo fuera equilibrada entre los miembros del equipo 
+a la vez que aislaba las responsabilidades de cada uno.
 
+\bigskip
+
+Así, el módulo \textbf{Salas} gestiona los ficheros \texttt{Salas.txt} y \texttt{Conexiones.txt}; el módulo \textbf{Jugador} 
+interacciona con \texttt{Jugadores.txt}; el módulo \textbf{Puzles} con \texttt{Puzles.txt}; y el módulo \textbf{Inventario} 
+con \texttt{Objetos.txt}. A este último podría habérsele denominado \emph{Objetos}, siendo ese el nombre del 
+fichero de configuración con el que trabaja; sin embargo, se optó por el nombre \textbf{Inventario} 
+porque su responsabilidad real es la gestión de \emph{colecciones} de objetos. Como previamente mencionábamos, la excepción a esta 
+correspondencia módulo-fichero es el módulo \textbf{UI} , cuyo cometido es exclusivamente 
+gestionar la interacción con el usuario ---mostrar menús, recoger entradas y presentar el estado del juego por pantalla--- 
+y que por tanto no tiene asociado ningún fichero de configuración propio. El módulo \textbf{Partida} 
+actúa como coordinador del sistema, siendo el responsable de inicializar el estado global de la partida 
+a partir de los datos cargados por los demás módulos, así como el guardado y la carga del estado de juego a t
+ravés de \texttt{Partida.txt}.
+
+\bigskip
+
+En la figura~\ref{fig:modulos} puede observarse el diagrama de dependencias e interacciones entre los módulos 
+y sus ficheros de configuración asociados.
+
+\bigskip
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{modules.png}
+\caption{Diagrama de dependencias entre módulos y ficheros de configuración de ESI-Escape.}
+\label{fig:modulos}
+\end{figure}
+
+\bigskip
+
+En cuanto al plan de desarrollo, se siguió \textbf{un enfoque incremental} de varias fases. En una primera fase, 
+cada miembro del equipo desarrolló su módulo de manera relativamente independiente, 
+con el objetivo de reducir al mínimo el acoplamiento entre componentes y facilitar la verificación individual de cada uno. 
+Finalizada esta fase, se llevó a cabo una prueba de integración conjunta para ajustar las interfaces entre módulos y 
+resolver las incompatibilidades surgidas.
+
+\bigskip
+
+A partir de ese punto, el equipo trabajó sobre un \emph{pseudoproyecto} con las funcionalidades básicas del 
+flujo de juego operativas, desde el cual se fue iterando funcionalidad a funcionalidad, realizando \texttt{commits} de la
+herramienta de control de versiones \texttt{git}, que completaban progresivamente 
+el esquema~\ref{fig:gameflow} descrito en el punto~2.1 de este documento hasta alcanzar la implementación completa del sistema.
 
 \subsection{Módulos}
 
@@ -18,10 +72,10 @@ A continuación se presenta una breve descripción de cada uno de los módulos e
 \begin{itemize}
 
 	\item \textbf{Partida}: Es el encargado de gestionar tareas relacionadas con la 
-	partida en sí. Esto es, guardar y cargar su estado, 
+	partida en sí además de lanzar los flujos del juego en sí. Esto es, guardar y cargar su estado, 
 	inicializar los archivos de configuración en memoria mediante
 	la importación de las funciones de carga de cada módulo, y gestionar el estado de
-	la estructura "GameState", que almacena el estado de la partida.
+	la estructura \texttt{GameState}, una \texttt{struct} de \textbf{C} que almacena el estado de la partida.
 	
 	\item \textbf{Inventario}: La responsabilidad de este módulo es la gestión de los objetos. Interacciona con el archivo de configuración
 	\textbf{Objetos.txt} para cargar los objetos registrados, y alberga diferentes funciones para buscar objetos en memoria, actualizar su estado
@@ -35,7 +89,6 @@ A continuación se presenta una breve descripción de cada uno de los módulos e
 
 \subsection{Plan de prueba}
 
-Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las pruebas realizadas a cada módulo y las pruebas de integración de los distintos módulos probándolo como un todo. Por último, también se debe incluir la descripción del plan de pruebas de aceptación.  
 
 
 \subsubsection{Pruebas de ruta básica (caja blanca) de tres funciones}
@@ -43,8 +96,15 @@ Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las
 \begin{itemize}
 
 	\item \textbf{Pruebas de ruta básica (caja blanca) de ''salas\_get\_sala\_from\_id'' (José Miguel Pérez Tejero):}
-	
-		\includegraphics[width=1\textwidth]{Salas_get_salas_by_id_grafo.png} \bigskip
+
+		En la figura~\ref{fig:grafo_salas} se muestra el grafo de flujo de control generado para esta función.
+
+		\begin{figure}[h!]
+		\centering
+		\includegraphics[width=1\textwidth]{Salas_get_salas_by_id_grafo.png}
+		\caption{Grafo de flujo de control de la función \texttt{salas\_get\_sala\_from\_id}.}
+		\label{fig:grafo_salas}
+		\end{figure}
 
 		\pagebreak
 
@@ -115,7 +175,6 @@ Debe describir todo el plan de pueba que se ha llevado a cabo. Se distinguen las
 
 \subsubsection{Prueba de integración}
 
-Incluir toda la batería de pruebas realizadas. Pruebas de caja blanca y pruebas de caja negra.  
 
 
 \subsubsection{ Plan de pruebas de aceptación}

@@ -67,7 +67,9 @@ el esquema~\ref{fig:gameflow} descrito en el punto~2.1 de este documento hasta a
 
 \subsection{Módulos}
 
-A continuación se presenta una breve descripción de cada uno de los módulos en las que ESI-Escape está divido.
+A continuación se presenta una breve descripción de cada uno de los módulos en las que ESI-Escape está divido. Se ha seguido una 
+convención de nombres de funciones en base al estándar \texttt{snake\_case}, a los que hemos añadido, por cada módulo, una
+palabra clave al principio del nombre de la función que se incluye en la descripción de cada módulo.
 
 \begin{itemize}
 
@@ -75,16 +77,33 @@ A continuación se presenta una breve descripción de cada uno de los módulos e
 	partida en sí además de lanzar los flujos del juego en sí. Esto es, guardar y cargar su estado, 
 	inicializar los archivos de configuración en memoria mediante
 	la importación de las funciones de carga de cada módulo, y gestionar el estado de
-	la estructura \texttt{GameState}, una \texttt{struct} de \textbf{C} que almacena el estado de la partida.
+	la estructura \texttt{GameState}, una \texttt{struct} de \textbf{C} que almacena el estado de la partida. Palabra
+	clave: \texttt{game\_}
 	
 	\item \textbf{Inventario}: La responsabilidad de este módulo es la gestión de los objetos. Interacciona con el archivo de configuración
 	\textbf{Objetos.txt} para cargar los objetos registrados, y alberga diferentes funciones para buscar objetos en memoria, actualizar su estado
-	y escribirlos al guardar la partida.
+	y escribirlos al guardar la partida. Palabra clave: \texttt{inv\_}
 
-	\item \textbf{Salas}: Este módulo se encarga del administrado tanto de las conexiones como de las salas que componen el escape room. Posee funciones para la carga de conexiones y salas; liberarlas de la memoria, obtener una sala por su ID, y obtener la sala inicial de la partida actual. Este módulo muestra en pantalla errores si no se pudieron cargar los datos de las salas y/o conexiones, o si poseen un formato incorrecto en alguno de sus campos.
+	\item \textbf{Salas}: Este módulo se encarga del administrado tanto de las conexiones como de las salas 
+	que componen el escape room. Posee funciones para la carga de conexiones y salas; liberarlas de la memoria, 
+	obtener una sala por su ID, y obtener la sala inicial de la partida actual. Este módulo muestra en pantalla errores 
+	si no se pudieron cargar los datos de las salas y/o conexiones, o si poseen un formato incorrecto en alguno de sus campos. 
+	Palabra clave: \texttt{salas\_}
 
-	\item \textbf{UI (Interfaz de Usuario)}: Este módulo se centra en pedir información al usuario y mostrarla por pantalla. Posee funciones para la creación de menús, vaciar el buffer de entrada, esperar a que el usuario presione una tecla para continuar, elegir SÍ o NO, mostrar el logo del juego y otros elementos por pantalla; salir del juego, mostrar los menús de registro o inicio de sesión, y el menú principal (el módulo '\textbf{partida} usa sus funciones para crear el menú de juego); mostrar los datos de las estructuras cargadas por memoria dinámica con la opción de poner filtros (por ejemplo, para solo ver los objetos en la sala actual); mostrar las interfaces de las diferentes opciones del menú de juego y de salir del juego mostrando unos breves créditos con los miembros creadores del trabajo.
+	\item \textbf{UI (Interfaz de Usuario)}: Este módulo se centra en pedir información al usuario y mostrarla por pantalla. 
+	Posee funciones para la creación de menús, vaciar el buffer de entrada, esperar a que el usuario presione una tecla para continuar, 
+	elegir SÍ o NO, mostrar el logo del juego y otros elementos por pantalla; salir del juego, mostrar los menús de registro o inicio de sesión,
+	 y el menú principal (el módulo '\textbf{partida} usa sus funciones para crear el menú de juego); mostrar los datos de las 
+	 estructuras cargadas por memoria dinámica con la opción de poner filtros (por ejemplo, para solo ver los objetos en la sala actual); 
+	 mostrar las interfaces de las diferentes opciones del menú de juego y de salir del juego mostrando unos breves créditos con los 
+	 miembros creadores del trabajo. Palabra clave: \texttt{ui\_}
+
+	\item \textbf{Jugador}: Palabra clave: \texttt{player\_}
+
+	\item \textbf{Puzles}: Palabra clave: \texttt{puzzle\_}
 \end{itemize}
+
+\bigskip
 
 
 \subsection{Plan de prueba}
@@ -170,7 +189,66 @@ A continuación se presenta una breve descripción de cada uno de los módulos e
 			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar a primero ejecutar \verb|salas_load_salas| y \verb|salas_load_conns|, luego \verb|salas_get_sala_inicial| para obtener el punto de inicio, buscar en las conexiones una que tenga como punto de partida la sala inicial y ver el destino, para usar \verb|salas_get_sala_from_id| y obtener el id de dicho destino, y terminar liberando memoria con \verb|salas_free_salas| y \verb|salas_free_cons| (debiendo de ocurrir todo el proceso sin ningún fallo ni ningún conflicto de integración entre cada función). También podemos intentar usar las funciones \verb|salas_load_salas| y \verb|salas_load_conns| con datos incorrectamente formateados o archivos no existentes o sin permisos (parando el programa porque, o bien no se puedo abrir el archivo pedido, o no estaba bien formateado).
 			
 		\end{itemize}
-	
+
+		\item \textbf{Pruebas del módulo inventario y sus funciones:}
+		\begin{itemize}
+			\item \verb|Inventory* inv_load_items(char path[]);| : Probaremos con un fichero de ruta existente y con formato correcto 
+			(cargándose sin problema todos los objetos en el \verb|Inventory*| devuelto), 
+			con una ruta inexistente o sin permisos (devolviendo \verb|NULL| y notificando el error por pantalla), 
+			y con un fichero que contenga alguna línea mal formada, es decir, con campos faltantes 
+			(notificándose el objeto concreto que no pudo cargarse, incluyendo los demás sin problema).
+			\item \verb|Item* inv_find_item_by_id(char wanted_id[5], Inventory *inv);| : Probaremos a buscar un ID que exista en el inventario 
+			(devolviendo un puntero al \verb|Item| correspondiente) y a buscar un ID inexistente (devolviendo \verb|NULL|).
+			\item \verb|int inv_write_items(FILE *file, Inventory *all_items);| : Probaremos con un \verb|FILE*| abierto en escritura 
+			y un inventario con objetos (escribiéndose todas las líneas en formato \verb|"OBJETO: Id-Localización"| y devolviendo 1), 
+			con \verb|file| a \verb|NULL| (devolviendo 0 sin escritura) y con \verb|all_items| a \verb|NULL| (devolviendo 0 sin escritura).
+			\item \verb|int inv_find_item(Item item, Inventory *inv);| : Probaremos a buscar un item presente en 
+			el inventario (debiendo devolver su posición, mayor o igual que 0) y a buscar un item no presente (devolviendo -1).
+			\item \verb|void inv_free_inventory(Inventory *inv_to_free);| : Probaremos con un inventario con slots cargados 
+			(liberándose sin problema), con un inventario cuyo \verb|slot| sea \verb|NULL| (sin fallo), y con el puntero al propio 
+			inventario a \verb|NULL| (sin fallo ni cierre accidental del programa).
+			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar una secuencia en la que primero carguemos el inventario 
+			con \verb|inv_load_items|, lo busquemos por ID con \verb|inv_find_item_by_id|,
+			 actualicemos su localización con \verb|inv_update_item_loc|, lo escribamos a fichero con \verb|inv_write_items| y liberemos la memoria con \verb|inv_free_inventory| 
+			 (debiendo ejecutarse todo el proceso sin ningún fallo ni conflicto de integración entre las funciones).
+		\end{itemize}
+
+		\item \textbf{Pruebas del módulo partida y sus funciones:}
+		\begin{itemize}
+			\item \verb|int game_update_sala(GameState*, Conn);| : Probaremos con una conexión cuyo \verb|conn_block| 
+			sea 0 (ocurriendo que \verb|current_sala| del \verb|GameState| se actualiza a la sala destino y se devuelve 1) 
+			y con una conexión cuyo \verb|conn_block| sea 1 (debiendo \verb|current_sala| permanecer sin cambios y devolverse 0).
+			\item \verb|int save_exists(char *player_id);| : Probaremos con un ID de jugador que exista en \verb|Partida.txt| 
+			(debiendo devolver 1) y con un ID que no exista (devolviendo 0).
+			\item \verb|int game_load(GameState*);| : Probaremos con un \verb|GameState| cuyo jugador activo tiene partida 
+			guardada en \verb|Partida.txt| (restaurándose correctamente la sala, los objetos, las conexiones y los puzles al estado guardado) 
+			y con un jugador sin partida guardada (no modificándose el \verb|GameState| al no encontrar el bloque correspondiente en el fichero).
+			\item \verb|void game_initial_struct_loading(GameState*);| : Probaremos con todos los ficheros de configuración presentes 
+			y correctamente formateados (cargándose salas, conexiones, objetos y puzles en el \verb|GameState|, y estableciéndose 
+			\verb|structs_already_loaded| y \verb|game_is_playing| a 1) y con algún fichero ausente o mal formateado 
+			(notificándose el error por el módulo correspondiente y terminando el programa con código 1 de error).
+			\item \verb|int game_hud(GameState*);| : Probaremos a seleccionar cada una de las diez opciones del menú de juego
+			(comprobando que se ejecuta la acción correspondiente y se devuelve el índice seleccionado) y en particular
+			la opción ``Volver'' (debiendo establecerse \verb|game_is_playing| a 0).
+			\item \verb|int game_save(GameState*);| : Probaremos el caso en el que el jugador activo no tenga partida guardada previa
+			(debiendo añadirse una nueva entrada al final de \verb|Partida.txt| con el estado actual y notificarse el éxito), 
+			el caso en el que sí exista partida guardada y se confirme la sobreescritura (debiendo llamarse a \verb|game_overwrite| y 
+			actualizarse la entrada), y el caso en el que exista partida guardada pero se rechace sobreescribir 
+			(no realizándose ningún cambio en el fichero).
+			\item \verb|int game_overwrite(GameState*);| : Probaremos con un jugador activo cuyo bloque existe en 
+			\verb|Partida.txt| (debiendo eliminarse su bloque anterior, copiarse el resto de jugadores sin modificar 
+			y escribirse el nuevo estado al final del fichero. Podremos verlo visualmente porque si el bloque del jugador estaba en medio 
+			del fichero, ahora estará al final.), 
+			y con un \verb|Partida.txt| que no contenga bloque 
+			previo del jugador activo (debiendo resultar en un fichero idéntico al original más la nueva entrada añadida al final).
+			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar la secuencia completa de ejecutar \verb|game_initial_struct_loading| 
+			para cargar las estructuras, comprobar con \verb|save_exists| si existe partida guardada, usar \verb|game_load| para restaurarla, 
+			iterar con \verb|game_hud| durante la partida y, al seleccionar ``Guardar partida'', comprobar que \verb|game_save| 
+			crea o sobreescribe correctamente la entrada en \verb|Partida.txt| mediante \verb|game_overwrite|, 
+			para finalmente salir con \verb|game_is_playing| a 0 (comprobando que toda la secuencia de carga, juego, 
+			guardado y salida transcurre sin errores ni conflictos de integración entre los módulos que componen la partida).
+		\end{itemize}
+
 \end{itemize}
 
 \subsubsection{Prueba de integración}

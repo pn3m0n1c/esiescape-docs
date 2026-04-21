@@ -147,87 +147,101 @@ palabra clave al principio del nombre de la función que se incluye en la descri
 			Así pues, diseñaremos casos de prueba que cumplan dichas condiciones, y dichos casos deberán hacer que la función devuelva un puntero a la sala con la ID buscada.
 \end{itemize}
 
-\begin{itemize}
-	\item \textbf{Pruebas de ruta básica de la función "\texttt{inv\_find\_item\_by\_id}":}
-		\emph{(Christian Romero Oliva)}
+\subsubsection{Pruebas de ruta básica de la función "\texttt{inv\_find\_item\_by\_id}":}
 
-		En la figura~\ref{fig:cfg_inv} se muestra el grafo de flujo de control generado para esta función.
+\emph{(Christian Romero Oliva)}
+
+\bigskip
+A continuación se muestra el código de la función a probar seleccionada junto a la 
+figura~\ref{fig:cfg_inv}, donde se muestra el grafo de flujo de control 
+generado para esta función.
 		
-		\newpage
+\newpage
 
-		\begin{verbatim}
-		Item* inv_find_item_by_id(char wanted_id[5], Inventory *inv){
-			int i;  (1)
+\begin{verbatim}
+	Item* inv_find_item_by_id(char wanted_id[5], Inventory *inv){
+		int i; (1)
+		Item* found_item = NULL; (2)
 
-			for (i = 0; i < inv->size; i++) {  (2)
-				if (strcmp(inv->slot[i].id, wanted_id) == 0){ (3)
-					return &inv->slot[i];  (4)
-				} (5)
-					
+		for (i = 0; i < inv->size; i++) { (3)
+			if (strcmp(inv->slot[i].id, wanted_id) == 0){ (4)
+				found_item = &inv->slot[i]; (5)
 			} (6)
+		} (7)
 
-			return NULL;  (7)
-		}
-		\end{verbatim}
+		return found_item; (8)
+	}
+\end{verbatim}
 
-		\begin{figure}[h!]
-		\centering
-		\includegraphics[width=0.4\textwidth]{cfg_christian.png}
-		\caption{Grafo de flujo de control de la función \texttt{inv\_find\_item\_by\_id}.}
-		\label{fig:cfg_inv}
-		\end{figure}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.4\textwidth]{cfg_christian.png}
+\caption{Grafo de flujo de control de la función \texttt{inv\_find\_item\_by\_id}.}
+\label{fig:cfg_inv}
+\end{figure} 
 
-		\pagebreak
+\pagebreak
 
-		\textbf{Complejidad ciclomática:}
+\textbf{Complejidad ciclomática:}
 
-		\begin{itemize}
-			\item $V(G) = NA - NN + 2 = 7 - 6 + 2 = \mathbf{3}$
-			\item $V(G) = NNP + 1 = 2 + 1 = \mathbf{3}$
-			\item $V(G) =$ número de regiones $= R1 + R2 + R3 = \mathbf{3}$
-		\end{itemize}
+\begin{itemize}
+	\item $V(G) = NA - NN + 2 = 8 - 7 + 2 = \mathbf{3}$
+	\item $V(G) = NNP + 1 = 2 + 1 = \mathbf{3}$
+	\item $V(G) =$ número de regiones $= R1 + R2 + R3 = \mathbf{3}$
+\end{itemize}
 
-		Donde 
-		\begin{itemize}
-			\item NA = número de aristas
-			\item NN = número de vértices
-			\item NNP = número de nodos predicado
-		\end{itemize}
-		(nodo~2: condición del \verb|for|; nodo~3: condición del \verb|if|).
+Donde 
 
-		\bigskip
+\begin{itemize}
+	\item NA = número de aristas
+	\item NN = número de vértices
+	\item NNP = número de nodos predicado
+\end{itemize}
 
-		\textbf{Rutas básicas linealmente independientes:} 
-		\begin{itemize}
-			\item \textbf{Ruta 1}: 1-2-6
-			\item \textbf{Ruta 2}: 1-2-3-5-2-6
-			\item \textbf{Ruta 3}: 1-2-3-4
-		\end{itemize}
+(nodo~3: condición del \verb|for|; nodo~4: condición del \verb|if|).
 
-		\bigskip
+\bigskip
 
-		\textbf{Casos de prueba:}
+\textbf{Rutas básicas linealmente independientes:} 
 
-		\item \textbf{Ruta 1 (1-2-6) (No entramos en el \texttt{for},):}
-			
-			Para que la condición del \verb|for| sea falsa desde el inicio, el campo \verb|size| del inventario debe ser 0.\\
-			Un caso de prueba sería pasar un \verb|Inventory| con \verb|size = 0| y cualquier \verb|wanted_id|.\\
-			El resultado esperado es que la función devuelva \verb|NULL|.
+\begin{itemize}
+	\item \textbf{Ruta 1}: 1-2-3-7-8
+	\item \textbf{Ruta 2}: 1-2-3-4-6-3-7-8
+	\item \textbf{Ruta 3}: 1-2-3-4-5-3-7-8
+\end{itemize}
 
-		\item \textbf{Ruta 2 (1-2-3-5-2-6) (Entramos en el \texttt{for} pero no en el \texttt{if}):}
+\bigskip
 
-			Para recorrer esta ruta el inventario debe tener al menos un elemento (\verb|size >= 1|), 
-			pero ninguno de sus items debe coincidir con el \verb|wanted_id| buscado.\\
-			Un caso de prueba sería un \verb|Inventory| con varios items cuyas IDs sean distintas a la buscada; 
-			la función iterará todos los slots sin hallar coincidencia.\\
-			El resultado esperado es que la función devuelva \verb|NULL|.
+\textbf{Casos de prueba:}
 
-		\item \textbf{Ruta 3 (1-2-3-4) (Entramos en el \texttt{for} y en el \texttt{if}):}
+\begin{itemize}
+	\item \textbf{Ruta 1 (1-2-3-7-8) (No entramos en el \texttt{for}):}
+		
+		Para que la condición del \verb|for| sea falsa desde el inicio, 
+		el campo \verb|size| del inventario debe ser 0.\\
+		Un caso de prueba sería pasar un \verb|Inventory| con \verb|size = 0| 
+		y cualquier \verb|wanted_id|.\\
+		El resultado esperado es que la función devuelva \verb|NULL|.
 
-			Para recorrer esta ruta el inventario debe contener al menos un item cuya ID coincida exactamente con \verb|wanted_id|.\\
-			Un caso de prueba sería un \verb|Inventory| en el que se sepa que existe un item con una ID concreta; 
-			Se llamará a \verb|inv_find_item_by_id| con esa ID y
-			el resultado esperado es que la función devuelva un puntero al \verb|Item| cuya ID coincide con la buscada.
+	\item \textbf{Ruta 2 (1-2-3-4-6-3-7-8) (Entramos en el \texttt{for} pero no en el \texttt{if}):}
+
+		Para recorrer esta ruta el inventario debe tener al menos un elemento 
+		(\verb|size >= 1|), 
+		pero ninguno de sus items debe coincidir con el \verb|wanted_id| buscado.\\
+		Un caso de prueba sería un \verb|Inventory| con varios items cuyas IDs 
+		sean distintas a la buscada; 
+		la función iterará todos los slots sin hallar coincidencia.\\
+		El resultado esperado es que la función devuelva \verb|NULL|.
+
+	\item \textbf{Ruta 3 (1-2-3-4-5-3-7-8) (Entramos en el \texttt{for} y en el \texttt{if}):}
+
+		Para recorrer esta ruta el inventario debe contener al menos un item 
+		cuya ID coincida exactamente con \verb|wanted_id|.\\
+		Un caso de prueba sería un \verb|Inventory| en el que se sepa que 
+		existe un item con una ID concreta; 
+		Se llamará a \verb|inv_find_item_by_id| con esa ID y
+		el resultado esperado es que la función devuelva un puntero al 
+		\verb|Item| cuya ID coincide con la buscada.
 \end{itemize}
 
 \subsubsection{Pruebas de caja negra de las funciones de cada módulo y de cada módulo como conjunto:}

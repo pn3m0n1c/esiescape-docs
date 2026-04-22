@@ -344,16 +344,57 @@ Donde
 			guardado y salida transcurre sin errores ni conflictos de integración entre los módulos que componen la partida).
 		\end{itemize}
 
-\end{itemize}
+		\item \textbf{Pruebas del módulo puzles y sus funciones:}
+		\begin{itemize}
+			\item \verb|array_puz* puzzle_loadpuzzles(char path[]);| : Se prueba con una ruta existente donde se encuentren los puzles 
+			donde se sumará el total de puzles leidos y se prueba con otra inexistente donde no existan los puzles que nos devolverá un "NULL".
+			\item \verb|puzle* puzzle_find_by_id(char* wanted_id, array_puz* arr);| : Se buscará un ID de un puzle que exista que nos 
+			devolverá la estructura de ese puzle y también otro que no exista que nos devolverá "NULL".
+			\item \verb|int puzzle_check_solution(array_puz *arr_puzles, char *id_puzle_objetivo, char *respuesta_jugador);| : 
+			Aquí probamos una solución correcta que nos devolverá 1, una solución incorrecta que nos devolverá 0 e intentar resolver 
+			un puzle ya antes resuelto que también devolverá 1.
+			\item \verb|void puzzle_freepuzzles(array_puz *arr_puzles);| : En esta función probaremos a llamar esta función 
+			al array con datos la cual nos borrará el contenido del array y también probaremos a llamarla cuando el array no tenga 
+			datos el cual dejará igual.
+			\\ \item \textbf{MÓDULO COMPLETO} : Podemos probar a primero ejecutar \texttt{puzzle\_loadpuzzles} para cargar
+			 la lista de puzles desde el fichero, luego usar \texttt{puzzle\_find\_by\_id} para localizar un puzle específico por su ID 
+			 y comprobar sus datos, enviar una respuesta correcta a dicho puzle y utilizar \texttt{puzzle\_check\_solution} para verificar 
+			 que es correcto, y terminar liberando memoria con \texttt{puzzle\_freepuzzles}. También podemos intentar ejecutar todas estas 
+			 funciones tras un \texttt{puzzle\_loadpuzzles} fallido con un archivo inexistente.
+		\end{itemize}
+
+		\item \textbf{Pruebas del módulo jugador y sus funciones:}
+		\begin{itemize}
+			\item \verb|jugadores *player_loadplayer(char path[]);| : Se probará a usa una ruta correcta donde se encuentre el 
+			fichero de jugadores y que cuando se llame a la función se carguen los jugadores y también se probará una ruta incorrecta
+			 la cual nos devolverá un "NULL".
+			\item \verb|void player_registerplayer(GameState *game_state, char *nom, char *contrasena, char *nom_completo);| : Aquí se probará 
+			a registrar un nuevo jugador que aparecerá con el inventario vacio, aumentará el array dinámico de jugadores y el total de jugadores 
+			leidos.
+			\item \verb|void player_saveplayer(GameState *game_state, char *path);| : Aquí se llamará a la función una vez se haya creado un nuevo
+			 jugador y tiene que guardaarse en el fichero de jugadores y también se probará a llamar a la función sin ningún jugador nuevo que 
+			 dará un aviso de que no se puede guardar a los jugadores.
+			\item \verb|jugador* player_findplayer(char name[21], char pass[9], jugadores* all_players);| : Probaremos a buscar un jugador por
+			su nombre y contraseña y nos tiene que devolver el puntero al jugador buscado para poder iniciar sesión, y también probaremos a 
+			introducir una contraseña o nombre de usuario erróneo y nos tiene que negar el acceso.
+			\item \verb|void player_freeplayer(jugadores *jugadores_borrar);| : Se probará a llamar a la función con el array de jugadores con
+			 datos el cual debería liberarse y se probará a llamar a la función con el array vacio que debería de dejar el array igual.
+			\\ \item \textbf{MÓDULO COMPLETO}: Podemos probar a primero ejecutar \texttt{player\_loadplayer} para obtener el array de usuarios registrados, 
+			luego usar \texttt{player\_registerplayer} para dar de alta a un jugador nuevo en el juego, comprobar que se ha registrado correctamente mediante 
+			\texttt{player\_findplayer}, guardar el jugador en el fichero de texto usando \texttt{player\_saveplayer}, y terminar liberando memoria de las estructuras
+			 con \texttt{player\_freeplayer}. También podemos intentar ejecutar esta secuencia pero al inicio con el fichero de jugadores vacio forzando un
+			error.
+		\end{itemize}
+
+	\end{itemize}
 
 \subsubsection{Prueba de integración}
 
-
+Para esta prueba se desarrolló de forma modular el escaperoom dividiendo este en 2 módulos por persona. Para garantizar el funcionamiento entre módulos se definieron los archivos de cabecera entre módulos para probar su funcionamiento, permitiendo así el uso de funciones de distintos módulos.
+Para continuar, se comprobó el funcionamiento de los distintos módulos al mismo tiempo dentro del archivo "main.c" para comprobar que ningún módulo causara problema con ningún otro, a continuación se comprobó el funcionamiento del menú del juego del módulo ui ya que será la primera parte que debería de funcionar en nuestro juego, y finalmente se completó el archivo "main.c" lanzando más funciones de los distintos módulos para terminar de comprobar su funcionamiento.  
 
 \subsubsection{ Plan de pruebas de aceptación}
 
-Estas pruebas deben diseñarse con el usuario del sistema. Deben describir las pruebas que son necesarias pasar para que el sistema sea aceptado por el usuario final.  
+Una vez acabadas las pruebas de integración obteniendo un scaperoom estable, se ejecutaron las pruebas de aceptación para comprobar si nuestro juego cumplia con los requisitos funcionales esperados. Una vez acabado el juego se completaron recorridos desde el inicio del juego hasta el final de este varias veces de todas las formas posibles sin dejar ninguna exepción, una vez completado esto, se distribuyó el juego a diferentes personas de nuestro entorno para que se probará el juego por terceros para poder intentar detectar distintos fallos que no se hayan podido encontrar por nosotros los desarrolladores del juego.
 
 \bigskip
-
-Si en algún punto del documento se quiere hacer referencia a algún documento es necesario incluir la cita donde corresponda, podemos tomar como ejemplo \cite{Ejemplo3}. 

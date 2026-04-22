@@ -97,10 +97,17 @@ palabra clave al principio del nombre de la función que se incluye en la descri
 	 estructuras cargadas por memoria dinámica con la opción de poner filtros (por ejemplo, para solo ver los objetos en la sala actual); 
 	 mostrar las interfaces de las diferentes opciones del menú de juego y de salir del juego mostrando unos breves créditos con los 
 	 miembros creadores del trabajo. Palabra clave: \texttt{ui\_}
+	\item \textbf{Puzles}: Este módulo contiene la estructura que necesita cada uno de los puzles del juego y también contiene 
+	todas las funciones relacionadas con los puzles. Algunas de las funciones que contiene este módulo son: buscar puzles por ID,
+	 la cual busca un puzle solo con introducir el ID del mismo; comprobar si el puzle está resuelto o no, que esta misma devuelve
+	  0 si el puzle está sin resolver o devuelve 1 si está resuelto, y por último la función de liberar puzles, la cual libera el 
+	  array de puzles los cuales están definidos por la estructura \textit{array\_puz}. Palabra clave: \texttt{player}
 
-	\item \textbf{Jugador}: Palabra clave: \texttt{player\_}
-
-	\item \textbf{Puzles}: Palabra clave: \texttt{puzzle\_}
+	\item \textbf{Jugador}: Este módulo contiene la estructura de todo jugador que sea añadido al juego y las distintas funciones con las
+	 cuales se hace eso posible. Algunas de las funciones que se presentan en este módulo son: registrar jugador, el cual añade toda la información de un 
+	 nuevo jugador a la estructura del jugador y posteriormente añade ese jugador a un array de jugadores; guardar jugadores, esta función solo coge el
+	  array de jugadores actual y guarda cada nuevo jugador dentro de \textit{jugadores.txt} siguiendo un formato, y por último, liberar jugadores, esta 
+	  función libera el array de jugadores dejándolo totalmente en blanco. Palabra clave: \texttt{puzzle\_}
 \end{itemize}
 
 \bigskip
@@ -145,6 +152,29 @@ palabra clave al principio del nombre de la función que se incluye en la descri
 		
 			Aquí ''\verb|number_of_salas|'' será mayor o igual que 1, coincidirá con el número de salas, y habrá una sala mínima cuyo ID coincida con ''\verb|id_to_search|''. \\
 			Así pues, diseñaremos casos de prueba que cumplan dichas condiciones, y dichos casos deberán hacer que la función devuelva un puntero a la sala con la ID buscada.
+
+		\item \textbf{Pruebas de ruta básica (caja blanca) de ''puzzle\_find\_by\_id'' (Javier Muñoz Arillo):}
+	
+		\begin{figure}[htbp]
+   	 	\centering
+    	\includegraphics[width=0.5\textwidth]{Fotoponerpacorro.jpeg}
+    	\caption{Aquí puedes escribir el título o descripción de tu esquema.}
+    	\label{fig:esquema_nodos}
+		\end{figure}
+
+		\textbf{Casos de prueba:}
+
+		\item \underline{Ruta 1 (1-2-3-4-5) (Ruta ideal):}
+		
+			Primero se declara la variable i para poder entrar en el bucle, una vez dentro del bucle el número de puzles debe de ser mínimo 1, una vez que hay mínimo un puzle para no volver a entrar al bucle el puzle que se debe buscar es el primero en el array de puzles y lo devuelve, después de eso se sale del bucle y se termina la función con el "return NULL".
+
+		\item \underline{Ruta 1 (1-2-3-2-3-4-5) (Ruta con vueltas en el bucle):}
+		
+			Primero se declara la variable i para poder entrar en el bucle, y a diferencia de la ruta ideal, en esta ruta si buscamos un id el bucle avanzará por el array de puzles para encontrar el puzle deseado varias veces, una vez encontrado se sale del bucle y termina la función.
+
+		\item \underline{Ruta 1 (1-2-5) (No se encuentra el puzle):}
+		
+			Primero se declara la variable i para entrar al bucle, al entrar al bucle se intenta buscar el puzle por todo el array de puzles pero este no es encontrado en todo el array, finalmente se sale del bucle y ddevuelve NULL.
 \end{itemize}
 
 \subsubsection{Pruebas de ruta básica de la función "\texttt{inv\_find\_item\_by\_id}":}

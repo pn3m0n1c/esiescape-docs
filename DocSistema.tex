@@ -51,7 +51,7 @@ y sus ficheros de configuración asociados.
 \end{figure}
 
 \bigskip
-
+''puzzle\_find\_by\_id''
 En cuanto al plan de desarrollo, se siguió \textbf{un enfoque incremental} de varias fases. En una primera fase, 
 cada miembro del equipo desarrolló su módulo de manera relativamente independiente, 
 con el objetivo de reducir al mínimo el acoplamiento entre componentes y facilitar la verificación individual de cada uno. 
@@ -158,7 +158,7 @@ palabra clave al principio del nombre de la función que se incluye en la descri
 		\begin{figure}[htbp]
    	 	\centering
     	\includegraphics[width=0.5\textwidth]{Fotoponerpacorro.jpeg}
-    	\caption{Aquí puedes escribir el título o descripción de tu esquema.}
+    	\caption{Grafo de flujo de control de la función ''puzzle\_find\_by\_id''}
     	\label{fig:esquema_nodos}
 		\end{figure}
 
@@ -174,7 +174,7 @@ palabra clave al principio del nombre de la función que se incluye en la descri
 
 		\item \underline{Ruta 1 (1-2-5) (No se encuentra el puzle):}
 		
-			Primero se declara la variable i para entrar al bucle, al entrar al bucle se intenta buscar el puzle por todo el array de puzles pero este no es encontrado en todo el array, finalmente se sale del bucle y ddevuelve NULL.
+			Primero se declara la variable i para entrar al bucle, al entrar al bucle se intenta buscar el puzle por todo el array de puzles pero este no es encontrado en todo el array, finalmente se sale del bucle y devuelve NULL.
 \end{itemize}
 
 \subsubsection{Pruebas de ruta básica de la función "\texttt{inv\_find\_item\_by\_id}":}
@@ -215,7 +215,7 @@ generado para esta función.
 \textbf{Complejidad ciclomática:}
 
 \begin{itemize}
-	\item $V(G) = NA - NN + 2 = 8 - 7 + 2 = \mathbf{3}$
+	\item $V(G) = NA - NN + 2 = 7 - 6 + 2 = \mathbf{3}$
 	\item $V(G) = NNP + 1 = 2 + 1 = \mathbf{3}$
 	\item $V(G) =$ número de regiones $= R1 + R2 + R3 = \mathbf{3}$
 \end{itemize}
@@ -420,8 +420,15 @@ Donde
 
 \subsubsection{Prueba de integración}
 
-Para esta prueba se desarrolló de forma modular el escaperoom dividiendo este en 2 módulos por persona. Para garantizar el funcionamiento entre módulos se definieron los archivos de cabecera entre módulos para probar su funcionamiento, permitiendo así el uso de funciones de distintos módulos.
-Para continuar, se comprobó el funcionamiento de los distintos módulos al mismo tiempo dentro del archivo "main.c" para comprobar que ningún módulo causara problema con ningún otro, a continuación se comprobó el funcionamiento del menú del juego del módulo ui ya que será la primera parte que debería de funcionar en nuestro juego, y finalmente se completó el archivo "main.c" lanzando más funciones de los distintos módulos para terminar de comprobar su funcionamiento.  
+Para esta prueba se desarrolló de forma modular el escaperoom dividiendo este en 2 módulos por persona. 
+Para garantizar el funcionamiento entre módulos se definieron los archivos de cabecera entre módulos para probar
+ su funcionamiento, permitiendo así el uso de funciones de distintos módulos.
+Para continuar, se comprobó el funcionamiento de los distintos módulos al mismo tiempo dentro del archivo 
+"main.c" para comprobar que ningún módulo causara problema con ningún otro, a continuación se comprobó el funcionamiento 
+del menú del juego del módulo ui ya que será la primera parte que debería de funcionar en nuestro juego, a la misma vez que 
+se iban probando distintas funciones creadas sobre la marcha dentro de este módulo ya que fue el 
+módulo que más funciones de distintos módulos necesitó, y finalmente se
+completó el archivo "main.c" lanzando más funciones de los distintos módulos para terminar de comprobar su funcionamiento.  
 
 \subsubsection{ Plan de pruebas de aceptación}
 
